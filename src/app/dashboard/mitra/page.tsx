@@ -103,28 +103,28 @@ export default function MitraPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-stone-100 bg-stone-50/50">
-                  <th className="px-5 py-3.5 text-left font-medium text-stone-500">Nama</th>
-                  <th className="px-5 py-3.5 text-left font-medium text-stone-500">Username</th>
-                  <th className="hidden px-5 py-3.5 text-left font-medium text-stone-500 sm:table-cell">No. HP</th>
-                  <th className="px-5 py-3.5 text-left font-medium text-stone-500">Status</th>
-                  <th className="hidden px-5 py-3.5 text-left font-medium text-stone-500 md:table-cell">Dibuat</th>
-                  <th className="px-5 py-3.5" />
+                  <th className="px-3 py-3 sm:px-5 sm:py-3.5 text-left font-medium text-stone-500 text-xs sm:text-sm">Nama</th>
+                  <th className="px-3 py-3 sm:px-5 sm:py-3.5 text-left font-medium text-stone-500 text-xs sm:text-sm">Username</th>
+                  <th className="hidden px-3 py-3 sm:px-5 sm:py-3.5 text-left font-medium text-stone-500 text-xs sm:text-sm sm:table-cell">No. HP</th>
+                  <th className="px-3 py-3 sm:px-5 sm:py-3.5 text-left font-medium text-stone-500 text-xs sm:text-sm">Status</th>
+                  <th className="hidden px-3 py-3 sm:px-5 sm:py-3.5 text-left font-medium text-stone-500 text-xs sm:text-sm md:table-cell">Dibuat</th>
+                  <th className="px-3 py-3 sm:px-5 sm:py-3.5" />
                 </tr>
               </thead>
               <tbody>
                 {list.map((m) => (
                   <tr key={m.id} className="border-b border-stone-100 transition-colors hover:bg-stone-50/50">
-                    <td className="px-5 py-3.5 font-medium text-stone-900">{m.nama}</td>
-                    <td className="px-5 py-3.5 text-stone-600">{m.username}</td>
-                    <td className="hidden px-5 py-3.5 text-stone-500 sm:table-cell">{m.no_hp || '—'}</td>
-                    <td className="px-5 py-3.5">
-                      <span className={`inline-block rounded-full px-3 py-1 text-xs font-medium ${m.status === 'aktif' ? 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200' : 'bg-stone-100 text-stone-600 ring-1 ring-stone-200'}`}>{m.status}</span>
+                    <td className="px-3 py-3 sm:px-5 sm:py-3.5 font-medium text-stone-900 text-xs sm:text-sm">{m.nama}</td>
+                    <td className="px-3 py-3 sm:px-5 sm:py-3.5 text-stone-600 text-xs sm:text-sm">{m.username}</td>
+                    <td className="hidden px-3 py-3 sm:px-5 sm:py-3.5 text-stone-500 text-xs sm:text-sm sm:table-cell">{m.no_hp || '—'}</td>
+                    <td className="px-3 py-3 sm:px-5 sm:py-3.5">
+                      <span className={`inline-block rounded-full px-2 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-xs font-medium ${m.status === 'aktif' ? 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200' : 'bg-stone-100 text-stone-600 ring-1 ring-stone-200'}`}>{m.status}</span>
                     </td>
-                    <td className="hidden px-5 py-3.5 text-stone-500 md:table-cell">{formatDate(m.created_at)}</td>
-                    <td className="px-5 py-3.5 text-right">
+                    <td className="hidden px-3 py-3 sm:px-5 sm:py-3.5 text-stone-500 text-xs sm:text-sm md:table-cell">{formatDate(m.created_at)}</td>
+                    <td className="px-3 py-3 sm:px-5 sm:py-3.5 text-right">
                       <div className="flex justify-end gap-1">
-                        <button onClick={() => { setEditTarget(m); resetForm(m); setModal('edit') }} className="rounded-lg px-3 py-1.5 text-xs font-medium text-stone-600 hover:bg-stone-100 transition-colors">Edit</button>
-                        <button onClick={() => setHapusId(m.id)} className="rounded-lg px-3 py-1.5 text-xs font-medium text-rose-600 hover:bg-rose-50 transition-colors">Hapus</button>
+                        <button onClick={() => { setEditTarget(m); resetForm(m); setModal('edit') }} className="rounded-lg px-2 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-xs font-medium text-stone-600 hover:bg-stone-100 transition-colors">Edit</button>
+                        <button onClick={() => setHapusId(m.id)} className="rounded-lg px-2 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-xs font-medium text-rose-600 hover:bg-rose-50 transition-colors">Hapus</button>
                       </div>
                     </td>
                   </tr>

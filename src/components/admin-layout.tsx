@@ -135,19 +135,19 @@ export function AdminLayout({
           </div>
 
           {/* Mobile bottom nav */}
-          <div className="flex gap-1 overflow-x-auto border-t border-stone-100 px-2 py-1.5">
+          <div className="flex items-center gap-0 overflow-x-auto border-t border-stone-100 px-1 py-1">
             {navItems.map((item) => {
               const active = pathname === item.href
               return (
                 <button
                   key={item.href}
                   onClick={() => router.push(item.href)}
-                  className={`flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
+                  className={`flex flex-col items-center gap-0.5 rounded-lg px-1.5 py-1 text-[10px] font-medium transition-colors min-w-0 flex-1 ${
                     active ? 'bg-violet-100 text-violet-700' : 'text-stone-500 hover:bg-stone-100'
                   }`}
                 >
                   <span className={active ? 'text-violet-600' : 'text-stone-400'}>{item.icon}</span>
-                  {item.label}
+                  <span className="truncate w-full text-center leading-tight">{item.label}</span>
                 </button>
               )
             })}

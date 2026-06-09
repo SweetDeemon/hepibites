@@ -134,27 +134,30 @@ export default function TransaksiPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-stone-100 bg-stone-50/50">
-                  <th className="px-5 py-3.5 text-left font-medium text-stone-500 whitespace-nowrap">Tanggal</th>
-                  <th className="px-5 py-3.5 text-left font-medium text-stone-500">Mitra</th>
-                  <th className="hidden px-5 py-3.5 text-left font-medium text-stone-500 sm:table-cell">Produk</th>
-                  <th className="px-5 py-3.5 text-left font-medium text-stone-500">Karton</th>
-                  <th className="px-5 py-3.5 text-left font-medium text-stone-500">Total</th>
-                  <th className="hidden px-5 py-3.5 text-left font-medium text-stone-500 md:table-cell">Status</th>
+                  <th className="px-3 py-3 sm:px-5 sm:py-3.5 text-left font-medium text-stone-500 text-xs sm:text-sm whitespace-nowrap">Tanggal</th>
+                  <th className="px-3 py-3 sm:px-5 sm:py-3.5 text-left font-medium text-stone-500 text-xs sm:text-sm">Mitra</th>
+                  <th className="hidden px-3 py-3 sm:px-5 sm:py-3.5 text-left font-medium text-stone-500 text-xs sm:text-sm sm:table-cell">Produk</th>
+                  <th className="px-3 py-3 sm:px-5 sm:py-3.5 text-left font-medium text-stone-500 text-xs sm:text-sm">Karton</th>
+                  <th className="px-3 py-3 sm:px-5 sm:py-3.5 text-left font-medium text-stone-500 text-xs sm:text-sm">Total</th>
+                  <th className="hidden px-3 py-3 sm:px-5 sm:py-3.5 text-left font-medium text-stone-500 text-xs sm:text-sm md:table-cell">Status</th>
                 </tr>
               </thead>
               <tbody>
-                {list.map(t => (
+                {list.map(t => {
+                  const shortDate = new Date(t.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })
+                  return (
                   <tr key={t.id} className="border-b border-stone-100 transition-colors hover:bg-stone-50/50">
-                    <td className="whitespace-nowrap px-5 py-3.5 text-stone-500">{formatDate(t.created_at)}</td>
-                    <td className="px-5 py-3.5 font-medium text-stone-900">{t.mitra.nama}</td>
-                    <td className="hidden px-5 py-3.5 capitalize text-stone-600 sm:table-cell">{t.produk.varian}</td>
-                    <td className="px-5 py-3.5 text-stone-600">{t.jumlah_karton}</td>
-                    <td className="px-5 py-3.5 font-medium text-stone-900">{rupiah(t.total_harga)}</td>
-                    <td className="hidden px-5 py-3.5 md:table-cell">
-                      <span className={`inline-block rounded-full px-3 py-1 text-xs font-medium ring-1 ${t.status_bayar === 'lunas' ? 'bg-emerald-50 text-emerald-700 ring-emerald-200' : 'bg-amber-50 text-amber-700 ring-amber-200'}`}>{t.status_bayar === 'lunas' ? 'Lunas' : 'Belum Lunas'}</span>
+                    <td className="whitespace-nowrap px-3 py-3 sm:px-5 sm:py-3.5 text-stone-500 text-xs sm:text-sm" title={formatDate(t.created_at)}><span className="sm:hidden">{shortDate}</span><span className="hidden sm:inline">{formatDate(t.created_at)}</span></td>
+                    <td className="px-3 py-3 sm:px-5 sm:py-3.5 font-medium text-stone-900 text-xs sm:text-sm">{t.mitra.nama}</td>
+                    <td className="hidden px-3 py-3 sm:px-5 sm:py-3.5 capitalize text-stone-600 text-xs sm:text-sm sm:table-cell">{t.produk.varian}</td>
+                    <td className="px-3 py-3 sm:px-5 sm:py-3.5 text-stone-600 text-xs sm:text-sm">{t.jumlah_karton}</td>
+                    <td className="px-3 py-3 sm:px-5 sm:py-3.5 font-medium text-stone-900 text-xs sm:text-sm">{rupiah(t.total_harga)}</td>
+                    <td className="hidden px-3 py-3 sm:px-5 sm:py-3.5 md:table-cell">
+                      <span className={`inline-block rounded-full px-2 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-xs font-medium ring-1 ${t.status_bayar === 'lunas' ? 'bg-emerald-50 text-emerald-700 ring-emerald-200' : 'bg-amber-50 text-amber-700 ring-amber-200'}`}>{t.status_bayar === 'lunas' ? 'Lunas' : 'Belum Lunas'}</span>
                     </td>
                   </tr>
-                ))}
+                )}
+                )}
               </tbody>
             </table>
           </div>
