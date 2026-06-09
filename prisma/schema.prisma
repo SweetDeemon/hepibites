@@ -1,0 +1,138 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  super_admin
+  admin
+  finance
+}
+
+enum StatusMitra {
+  aktif
+  nonaktif
+}
+
+enum VarianProduk {
+  coklat
+  keju
+  ayam
+}
+
+enum MetodeBayar {
+  cash
+  kredit
+}
+
+enum StatusBayar {
+  lunas
+  belum_lunas
+}
+
+enum StatusKredit {
+  aktif
+  lunas
+}
+
+enum TipeStok {
+  masuk
+  keluar
+}
+
+model User {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String
+  nama      String
+  role      Role     @default(admin)
+  created_at DateTime @default(now())
+
+  transaksi Transaksi[]
+}
+
+model Mitra {
+  id        String      @id @default(cuid())
+  username  String      @unique
+  password  String
+  nama      String
+  alamat    String?
+  no_hp     String?
+  email     String?
+  lat       Float?
+  lng       Float?
+  status    StatusMitra @default(aktif)
+  created_at DateTime   @default(now())
+
+  transaksi Transaksi[]
+  kredit    Kredit[]
+}
+
+model Produk {
+  id             String       @id @default(cuid())
+  nama           String
+  varian         VarianProduk
+  stok           Int          @default(0)
+  isi_per_karton Int          @default(60)
+  harga_satuan   Int          @default(105000)
+  harga_grosir   Int          @default(100000)
+  min_grosir     Int          @default(10)
+  max_grosir     Int          @default(30)
+  created_at     DateTime     @default(now())
+
+  stok_log StokLog[]
+  transaksi Transaksi[]
+
+  @@unique([nama, varian])
+}
+
+model Transaksi {
+  id             String      @id @default(cuid())
+  mitra_id       String
+  produk_id      String
+  tanggal        DateTime    @default(now())
+  jumlah_karton  Int
+  harga_per_karton Int
+  total_harga    Int
+  metode_bayar   MetodeBayar
+  status_bayar   StatusBayar @default(belum_lunas)
+  created_by     String
+  is_cancelled   Boolean     @default(false)
+  created_at     DateTime    @default(now())
+
+  mitra  Mitra   @relation(fields: [mitra_id], references: [id])
+  produk Produk  @relation(fields: [produk_id], references: [id])
+  user   User    @relation(fields: [created_by], references: [id])
+  kredit Kredit?
+}
+
+model Kredit {
+  id              String       @id @default(cuid())
+  transaksi_id    String       @unique
+  mitra_id        String
+  jumlah_hutang   Int
+  jumlah_terbayar Int          @default(0)
+  sisa_hutang     Int
+  tanggal_jatuh_tempo DateTime
+  status          StatusKredit @default(aktif)
+  created_at      DateTime     @default(now())
+
+  transaksi Transaksi @relation(fields: [transaksi_id], references: [id])
+  mitra     Mitra     @relation(fields: [mitra_id], references: [id])
+}
+
+model StokLog {
+  id           String   @id @default(cuid())
+  produk_id    String
+  tipe         TipeStok
+  jumlah       Int
+  referensi_id String?
+  keterangan   String?
+  created_at   DateTime @default(now())
+
+  produk Produk @relation(fields: [produk_id], references: [id])
+}
