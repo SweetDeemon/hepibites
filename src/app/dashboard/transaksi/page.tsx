@@ -65,22 +65,30 @@ export default function TransaksiPage() {
   return (
     <AdminLayout title="Transaksi Penjualan" session={session}>
       {msg.text && (
-        <div className={`mb-4 rounded-xl border px-4 py-3 text-sm ${msg.type === 'success' ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-rose-200 bg-rose-50 text-rose-700'}`}>{msg.text}</div>
+        <div className={`mb-4 rounded-xl border px-4 py-3 text-sm flex items-center gap-2 ${msg.type === 'success' ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-rose-200 bg-rose-50 text-rose-700'}`}>
+          <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={msg.type === 'success' ? 'M5 13l4 4L19 7' : 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'} /></svg>
+          {msg.text}
+        </div>
       )}
 
       <div className="mb-6 flex flex-wrap items-center gap-3">
-        <input type="date" value={startDate} onChange={(e) => { setStartDate(e.target.value); setLoading(true) }} className="rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-sm text-stone-900 outline-none transition-all focus:border-violet-400 focus:ring-4 focus:ring-violet-100" />
-        <span className="text-xs text-stone-400">s/d</span>
-        <input type="date" value={endDate} onChange={(e) => { setEndDate(e.target.value); setLoading(true) }} className="rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-sm text-stone-900 outline-none transition-all focus:border-violet-400 focus:ring-4 focus:ring-violet-100" />
-        <button onClick={() => { setShowForm(true); setForm(p => ({ ...p, produk_id: produkList[0]?.id || '' })) }} className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-violet-200 transition-all hover:from-violet-700 hover:to-indigo-700">
+        <input type="date" value={startDate} onChange={(e) => { setStartDate(e.target.value); setLoading(true) }} className="rounded-xl border border-violet-200 bg-white/70 px-4 py-2.5 text-sm text-[#2e1065] outline-none transition-all focus:border-violet-400 focus:ring-4 focus:ring-violet-100" />
+        <span className="text-xs text-[#a78bfa]">s/d</span>
+        <input type="date" value={endDate} onChange={(e) => { setEndDate(e.target.value); setLoading(true) }} className="rounded-xl border border-violet-200 bg-white/70 px-4 py-2.5 text-sm text-[#2e1065] outline-none transition-all focus:border-violet-400 focus:ring-4 focus:ring-violet-100" />
+        <button onClick={() => { setShowForm(true); setForm(p => ({ ...p, produk_id: produkList[0]?.id || '' })) }} className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-violet-200/50 transition-all hover:from-violet-700 hover:to-fuchsia-700 hover:shadow-xl cursor-pointer">
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
           Transaksi Baru
         </button>
       </div>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="mb-6 rounded-2xl border border-stone-200 bg-white p-6 shadow-sm space-y-5">
-          <h2 className="text-lg font-semibold text-stone-900">Transaksi Baru</h2>
+        <form onSubmit={handleSubmit} className="mb-6 rounded-2xl border border-violet-100 bg-white/80 p-6 shadow-sm backdrop-blur-sm space-y-5 animate-slide-up">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white text-sm font-bold">
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+            </div>
+            <h2 className="text-lg font-semibold text-[#2e1065]">Transaksi Baru</h2>
+          </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <FormField label="Mitra">
               <select required value={form.mitra_id} onChange={(e) => setForm(p => ({ ...p, mitra_id: e.target.value }))} className={selCls}>
@@ -96,7 +104,7 @@ export default function TransaksiPage() {
             </FormField>
             <FormField label="Jumlah (karton)">
               <input type="number" required min={1} max={sp?.stok ?? 1} value={form.jumlah_karton} onChange={(e) => setForm(p => ({ ...p, jumlah_karton: Number(e.target.value) }))} className={inpCls} />
-              {sp && <p className="mt-1 text-xs text-stone-400">Maks: {sp.stok} karton</p>}
+              {sp && <p className="mt-1 text-xs text-[#a78bfa]">Maks: {sp.stok} karton</p>}
             </FormField>
             <FormField label="Metode Bayar">
               <select value={form.metode_bayar} onChange={(e) => setForm(p => ({ ...p, metode_bayar: e.target.value }))} className={selCls}>
@@ -111,49 +119,59 @@ export default function TransaksiPage() {
             )}
           </div>
           {hpk !== null && (
-            <div className="rounded-xl bg-gradient-to-r from-violet-50 to-indigo-50 border border-violet-100 p-4">
-              <div className="flex items-center justify-between text-sm"><span className="text-stone-600">Harga per karton</span><span className="font-medium text-stone-900">{rupiah(hpk)}</span></div>
-              <div className="mt-2 flex items-center justify-between border-t border-violet-200 pt-2 text-lg font-bold"><span className="text-stone-900">Total</span><span className="text-violet-700">{rupiah(form.jumlah_karton * hpk)}</span></div>
+            <div className="rounded-xl bg-gradient-to-r from-violet-50 to-fuchsia-50 border border-violet-100 p-5">
+              <div className="flex items-center justify-between text-sm"><span className="text-[#6d28d9]/60">Harga per karton</span><span className="font-medium text-[#2e1065]">{rupiah(hpk)}</span></div>
+              <div className="mt-3 flex items-center justify-between border-t border-violet-200 pt-3 text-lg font-bold"><span className="text-[#2e1065]">Total</span><span className="text-violet-700">{rupiah(form.jumlah_karton * hpk)}</span></div>
             </div>
           )}
-          {form.jumlah_karton !== 1 && hpk === null && <p className="text-sm text-amber-600">Jumlah karton harus 1 atau antara {sp?.min_grosir}-{sp?.max_grosir}.</p>}
+          {form.jumlah_karton !== 1 && hpk === null && <p className="rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-700">Jumlah karton harus 1 atau antara {sp?.min_grosir}-{sp?.max_grosir}.</p>}
           <div className="flex justify-end gap-3">
-            <button type="button" onClick={() => setShowForm(false)} className="rounded-xl px-5 py-2.5 text-sm font-medium text-stone-600 hover:bg-stone-100 transition-colors">Batal</button>
-            <button type="submit" disabled={submitting || hpk === null} className="rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 px-6 py-2.5 text-sm font-medium text-white shadow-lg shadow-violet-200 hover:from-violet-700 hover:to-indigo-700 disabled:opacity-50 transition-all">{submitting ? 'Menyimpan...' : 'Simpan Transaksi'}</button>
+            <button type="button" onClick={() => setShowForm(false)} className="rounded-xl px-5 py-2.5 text-sm font-medium text-[#6d28d9]/60 hover:bg-violet-50 transition-colors cursor-pointer">Batal</button>
+            <button type="submit" disabled={submitting || hpk === null} className="rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-6 py-2.5 text-sm font-medium text-white shadow-lg shadow-violet-200/50 hover:from-violet-700 hover:to-fuchsia-700 disabled:opacity-50 transition-all cursor-pointer">{submitting ? 'Menyimpan...' : 'Simpan Transaksi'}</button>
           </div>
         </form>
       )}
 
       {loading ? (
-        <div className="flex items-center justify-center py-20"><div className="h-8 w-8 animate-spin rounded-full border-4 border-violet-200 border-t-violet-600" /></div>
+        <div className="flex items-center justify-center py-20">
+          <div className="flex flex-col items-center gap-3">
+            <div className="h-10 w-10 animate-spin rounded-full border-[3px] border-violet-200 border-t-violet-600" />
+            <p className="text-sm text-[#6d28d9]/50">Memuat data...</p>
+          </div>
+        </div>
       ) : list.length === 0 ? (
-        <div className="rounded-2xl border border-stone-200 bg-white p-12 text-center"><p className="text-stone-500">Belum ada transaksi.</p></div>
+        <div className="rounded-2xl border border-violet-100 bg-white/70 p-16 text-center shadow-sm">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-violet-50 mb-4">
+            <svg className="h-8 w-8 text-[#a78bfa]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2" /></svg>
+          </div>
+          <p className="text-[#6d28d9]/60">Belum ada transaksi.</p>
+        </div>
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm">
+        <div className="overflow-hidden rounded-2xl border border-violet-100 bg-white/80 shadow-sm backdrop-blur-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-stone-100 bg-stone-50/50">
-                  <th className="px-3 py-3 sm:px-5 sm:py-3.5 text-left font-medium text-stone-500 text-xs sm:text-sm whitespace-nowrap">Tanggal</th>
-                  <th className="px-3 py-3 sm:px-5 sm:py-3.5 text-left font-medium text-stone-500 text-xs sm:text-sm">Mitra</th>
-                  <th className="hidden px-3 py-3 sm:px-5 sm:py-3.5 text-left font-medium text-stone-500 text-xs sm:text-sm sm:table-cell">Produk</th>
-                  <th className="px-3 py-3 sm:px-5 sm:py-3.5 text-left font-medium text-stone-500 text-xs sm:text-sm">Karton</th>
-                  <th className="px-3 py-3 sm:px-5 sm:py-3.5 text-left font-medium text-stone-500 text-xs sm:text-sm">Total</th>
-                  <th className="hidden px-3 py-3 sm:px-5 sm:py-3.5 text-left font-medium text-stone-500 text-xs sm:text-sm md:table-cell">Status</th>
+                <tr className="border-b border-violet-100 bg-gradient-to-r from-violet-50/50 to-fuchsia-50/50">
+                  <th className="px-3 py-3.5 sm:px-5 text-left font-medium text-[#6d28d9]/60 text-xs sm:text-sm whitespace-nowrap">Tanggal</th>
+                  <th className="px-3 py-3.5 sm:px-5 text-left font-medium text-[#6d28d9]/60 text-xs sm:text-sm">Mitra</th>
+                  <th className="hidden px-3 py-3.5 sm:px-5 text-left font-medium text-[#6d28d9]/60 text-xs sm:text-sm sm:table-cell">Produk</th>
+                  <th className="px-3 py-3.5 sm:px-5 text-left font-medium text-[#6d28d9]/60 text-xs sm:text-sm">Karton</th>
+                  <th className="px-3 py-3.5 sm:px-5 text-left font-medium text-[#6d28d9]/60 text-xs sm:text-sm">Total</th>
+                  <th className="hidden px-3 py-3.5 sm:px-5 text-left font-medium text-[#6d28d9]/60 text-xs sm:text-sm md:table-cell">Status</th>
                 </tr>
               </thead>
               <tbody>
                 {list.map(t => {
                   const shortDate = new Date(t.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })
                   return (
-                  <tr key={t.id} className="border-b border-stone-100 transition-colors hover:bg-stone-50/50">
-                    <td className="whitespace-nowrap px-3 py-3 sm:px-5 sm:py-3.5 text-stone-500 text-xs sm:text-sm" title={formatDate(t.created_at)}><span className="sm:hidden">{shortDate}</span><span className="hidden sm:inline">{formatDate(t.created_at)}</span></td>
-                    <td className="px-3 py-3 sm:px-5 sm:py-3.5 font-medium text-stone-900 text-xs sm:text-sm">{t.mitra.nama}</td>
-                    <td className="hidden px-3 py-3 sm:px-5 sm:py-3.5 capitalize text-stone-600 text-xs sm:text-sm sm:table-cell">{t.produk.varian}</td>
-                    <td className="px-3 py-3 sm:px-5 sm:py-3.5 text-stone-600 text-xs sm:text-sm">{t.jumlah_karton}</td>
-                    <td className="px-3 py-3 sm:px-5 sm:py-3.5 font-medium text-stone-900 text-xs sm:text-sm">{rupiah(t.total_harga)}</td>
-                    <td className="hidden px-3 py-3 sm:px-5 sm:py-3.5 md:table-cell">
-                      <span className={`inline-block rounded-full px-2 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-xs font-medium ring-1 ${t.status_bayar === 'lunas' ? 'bg-emerald-50 text-emerald-700 ring-emerald-200' : 'bg-amber-50 text-amber-700 ring-amber-200'}`}>{t.status_bayar === 'lunas' ? 'Lunas' : 'Belum Lunas'}</span>
+                  <tr key={t.id} className="border-b border-violet-50 transition-colors hover:bg-violet-50/30">
+                    <td className="whitespace-nowrap px-3 py-3.5 sm:px-5 text-[#6d28d9]/50 text-xs sm:text-sm" title={formatDate(t.created_at)}><span className="sm:hidden">{shortDate}</span><span className="hidden sm:inline">{formatDate(t.created_at)}</span></td>
+                    <td className="px-3 py-3.5 sm:px-5 font-medium text-[#2e1065] text-xs sm:text-sm">{t.mitra.nama}</td>
+                    <td className="hidden px-3 py-3.5 sm:px-5 capitalize text-[#6d28d9]/70 text-xs sm:text-sm sm:table-cell">{t.produk.varian}</td>
+                    <td className="px-3 py-3.5 sm:px-5 text-[#6d28d9]/70 text-xs sm:text-sm">{t.jumlah_karton}</td>
+                    <td className="px-3 py-3.5 sm:px-5 font-medium text-[#2e1065] text-xs sm:text-sm">{rupiah(t.total_harga)}</td>
+                    <td className="hidden px-3 py-3.5 sm:px-5 md:table-cell">
+                      <span className={`inline-block rounded-full px-2.5 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-xs font-medium ring-1 ${t.status_bayar === 'lunas' ? 'bg-emerald-50 text-emerald-700 ring-emerald-200' : 'bg-amber-50 text-amber-700 ring-amber-200'}`}>{t.status_bayar === 'lunas' ? 'Lunas' : 'Belum Lunas'}</span>
                     </td>
                   </tr>
                 )}
@@ -167,6 +185,6 @@ export default function TransaksiPage() {
   )
 }
 
-const inpCls = 'w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-2.5 text-sm text-stone-900 outline-none transition-all focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100'
-const selCls = 'w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-2.5 text-sm text-stone-900 outline-none transition-all focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100'
-function FormField({ label, children }: { label: string; children: React.ReactNode }) { return <div><label className="block text-sm font-medium text-stone-700 mb-1.5">{label}</label>{children}</div> }
+const inpCls = 'w-full rounded-xl border border-violet-200 bg-violet-50/50 px-4 py-2.5 text-sm text-[#2e1065] placeholder-[#a78bfa]/50 outline-none transition-all focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100'
+const selCls = 'w-full rounded-xl border border-violet-200 bg-violet-50/50 px-4 py-2.5 text-sm text-[#2e1065] outline-none transition-all focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100'
+function FormField({ label, children }: { label: string; children: React.ReactNode }) { return <div><label className="block text-sm font-medium text-[#2e1065] mb-1.5">{label}</label>{children}</div> }

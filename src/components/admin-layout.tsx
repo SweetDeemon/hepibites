@@ -39,22 +39,21 @@ export function AdminLayout({
   const router = useRouter()
   const pathname = usePathname()
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [mobileNavOpen, setMobileNavOpen] = useState(false)
 
   return (
-    <div className="flex min-h-screen bg-stone-50">
+    <div className="flex min-h-screen bg-gradient-to-br from-[#faf5ff] via-white to-[#fdf4ff]">
       {/* Mobile overlay */}
       {sidebarOpen && (
-        <div className="fixed inset-0 z-40 bg-black/30 lg:hidden" onClick={() => setSidebarOpen(false)} />
+        <div className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm lg:hidden" onClick={() => setSidebarOpen(false)} />
       )}
 
       {/* Sidebar */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-64 transform border-r border-stone-200 bg-white shadow-sm transition-transform duration-200 lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="flex h-16 items-center gap-3 border-b border-stone-100 px-6">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 text-sm font-bold text-white shadow-lg shadow-violet-200">
+      <aside className={`fixed inset-y-0 left-0 z-50 w-64 transform border-r border-violet-100 bg-white/90 shadow-xl shadow-violet-200/10 backdrop-blur-xl transition-transform duration-300 lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className="flex h-16 items-center gap-3 border-b border-violet-100 px-6">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-fuchsia-600 text-sm font-bold text-white shadow-lg shadow-violet-200/50">
             H
           </div>
-          <span className="text-lg font-bold text-stone-900">HepiBites</span>
+          <span className="text-lg font-bold text-[#2e1065]">HepiBites</span>
         </div>
         <nav className="space-y-1 p-4">
           {navItems.map((item) => {
@@ -63,30 +62,30 @@ export function AdminLayout({
               <button
                 key={item.href}
                 onClick={() => { router.push(item.href); setSidebarOpen(false) }}
-                className={`flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium transition-all ${
+                className={`flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium transition-all cursor-pointer ${
                   active
-                    ? 'bg-gradient-to-r from-violet-50 to-indigo-50 text-violet-700 shadow-sm'
-                    : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'
+                    ? 'bg-gradient-to-r from-violet-100 to-fuchsia-100 text-[#5b21b6] shadow-sm'
+                    : 'text-[#6d28d9]/60 hover:bg-violet-50 hover:text-[#2e1065]'
                 }`}
               >
-                <span className={active ? 'text-violet-600' : 'text-stone-400'}>{item.icon}</span>
+                <span className={active ? 'text-violet-600' : 'text-[#a78bfa]'}>{item.icon}</span>
                 {item.label}
               </button>
             )
           })}
         </nav>
-        <div className="absolute bottom-0 left-0 right-0 border-t border-stone-100 p-4">
-          <div className="flex items-center gap-3 rounded-xl bg-stone-50 px-4 py-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 text-xs font-bold text-white">
+        <div className="absolute bottom-0 left-0 right-0 border-t border-violet-100 p-4">
+          <div className="flex items-center gap-3 rounded-xl bg-gradient-to-r from-violet-50 to-fuchsia-50 px-4 py-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-fuchsia-600 text-xs font-bold text-white">
               {session.name.charAt(0).toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="truncate text-sm font-medium text-stone-900">{session.name}</p>
-              <p className="text-xs text-stone-500">{session.role}</p>
+              <p className="truncate text-sm font-medium text-[#2e1065]">{session.name}</p>
+              <p className="text-xs text-[#6d28d9]/50 capitalize">{session.role}</p>
             </div>
             <button
               onClick={() => router.push('/login')}
-              className="rounded-lg p-1.5 text-stone-400 hover:bg-stone-200 hover:text-stone-600"
+              className="rounded-lg p-1.5 text-[#a78bfa] hover:bg-white/50 hover:text-rose-500 transition-colors cursor-pointer"
               title="Keluar"
             >
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
@@ -98,55 +97,34 @@ export function AdminLayout({
       {/* Main area */}
       <div className="flex flex-1 flex-col lg:pl-0">
         {/* Top header (mobile) */}
-        <header className="sticky top-0 z-30 border-b border-stone-200 bg-white/80 backdrop-blur-lg lg:hidden">
+        <header className="sticky top-0 z-30 border-b border-violet-100 bg-white/80 backdrop-blur-lg lg:hidden">
           <div className="flex h-16 items-center justify-between px-4">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="rounded-xl p-2 text-stone-500 hover:bg-stone-100"
+              className="rounded-xl p-2 text-[#a78bfa] hover:bg-violet-50 transition-colors cursor-pointer"
             >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
             </button>
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-600 to-indigo-600 text-sm font-bold text-white">H</div>
-              <span className="font-bold text-stone-900">HepiBites</span>
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-600 to-fuchsia-600 text-sm font-bold text-white">H</div>
+              <span className="font-bold text-[#2e1065]">HepiBites</span>
             </div>
-            <button
-              onClick={() => setMobileNavOpen(!mobileNavOpen)}
-              className="rounded-xl p-2 text-stone-500 hover:bg-stone-100"
-            >
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" /></svg>
-            </button>
-
-            {mobileNavOpen && (
-              <div className="absolute right-4 top-16 w-56 rounded-xl border border-stone-200 bg-white p-2 shadow-lg">
-                <div className="border-b border-stone-100 px-3 py-2">
-                  <p className="text-sm font-medium text-stone-900">{session.name}</p>
-                  <p className="text-xs text-stone-500">{session.role}</p>
-                </div>
-                <button
-                  onClick={() => router.push('/login')}
-                  className="mt-1 flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-stone-600 hover:bg-stone-100"
-                >
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
-                  Keluar
-                </button>
-              </div>
-            )}
+            <div className="w-10" />
           </div>
 
           {/* Mobile bottom nav */}
-          <div className="flex items-center gap-0 overflow-x-auto border-t border-stone-100 px-1 py-1">
+          <div className="flex items-center gap-0 overflow-x-auto border-t border-violet-100 px-1 py-1">
             {navItems.map((item) => {
               const active = pathname === item.href
               return (
                 <button
                   key={item.href}
                   onClick={() => router.push(item.href)}
-                  className={`flex flex-col items-center gap-0.5 rounded-lg px-1.5 py-1 text-[10px] font-medium transition-colors min-w-0 flex-1 ${
-                    active ? 'bg-violet-100 text-violet-700' : 'text-stone-500 hover:bg-stone-100'
+                  className={`flex flex-col items-center gap-0.5 rounded-lg px-1.5 py-1 text-[10px] font-medium transition-colors min-w-0 flex-1 cursor-pointer ${
+                    active ? 'bg-violet-100 text-[#5b21b6]' : 'text-[#6d28d9]/50 hover:bg-violet-50'
                   }`}
                 >
-                  <span className={active ? 'text-violet-600' : 'text-stone-400'}>{item.icon}</span>
+                  <span className={active ? 'text-violet-600' : 'text-[#a78bfa]'}>{item.icon}</span>
                   <span className="truncate w-full text-center leading-tight">{item.label}</span>
                 </button>
               )
@@ -158,7 +136,7 @@ export function AdminLayout({
         <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-7xl">
             <div className="mb-6 flex items-center justify-between">
-              <h1 className="text-2xl font-bold tracking-tight text-stone-900">{title}</h1>
+              <h1 className="text-2xl font-bold tracking-tight text-[#2e1065]">{title}</h1>
             </div>
             {children}
           </div>
